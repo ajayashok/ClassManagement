@@ -17,4 +17,26 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+	Route::middleware(['logincheck'])->group(function ()
+	 {
+	 	Route::get('/home', 'HomeController@index')->name('home');
+
+	});
+
+	Route::middleware(['studentcheck'])->group(function ()
+	 {
+	 	Route::resource('student','StudentController');
+	});
+
+	Route::middleware(['admincheck'])->group(function ()
+	 {
+	    Route::resource('admin','AdminController');
+	});
+
+	Route::middleware(['teachercheck'])->group(function ()
+	 {
+	    Route::resource('teacher','TeacherController');
+	});
+
+	Route::resource('message','MessageController');

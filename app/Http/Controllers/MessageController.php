@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Message;
 use App\Student;
 use Illuminate\Http\Request;
-use App\Teacher;
 
-class StudentController extends Controller
+class MessageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $teach=Teacher::leftjoin('users','users.id','=','teachers.user_id')
-                        ->select('teachers.*','users.name','users.email')->get();
-
-        return view('student.Student_home',compact('teach'));
+        //
     }
 
     /**
@@ -39,16 +36,24 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-       //
+        $id=Student::where('user_id',$request->stud_id)->pluck('id')->first();
+        $message=new Message();
+        $message->teacher_id=$request->tech_id;
+        $message->student_id=$id;
+        $message->message=$request->message;
+        $message->save();
+
+         $request->session()->flash('success', 'Message Send Successfully !!');
+        return redirect()->action('StudentController@index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Student  $student
+     * @param  \App\Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    public function show(Message $message)
     {
         //
     }
@@ -56,10 +61,10 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Student  $student
+     * @param  \App\Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function edit(Student $student)
+    public function edit(Message $message)
     {
         //
     }
@@ -68,10 +73,10 @@ class StudentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Student  $student
+     * @param  \App\Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, Message $message)
     {
         //
     }
@@ -79,10 +84,10 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Student  $student
+     * @param  \App\Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy(Message $message)
     {
         //
     }

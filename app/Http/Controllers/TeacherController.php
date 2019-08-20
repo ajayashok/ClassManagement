@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Teacher;
+use App\Message;
 use Illuminate\Http\Request;
+use Auth;
 
 class TeacherController extends Controller
 {
@@ -14,7 +16,13 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        //
+        $id=Teacher::where('user_id',Auth::user()->id)->pluck('id')->first();
+        $message=Message::leftjoin('students','students.id','=','messages.student_id')
+                           ->leftjoin('teachers','teachers.id','=','messages.teacher_id')
+                           ->leftjoin('users','users.id','=','students.user_id')
+                           ->select('students.*','teachers.*','messages.*','users.name as student_name')->where('teachers.id',$id)->get(); 
+        // return response()->json($message);
+        return view('teacher.Teacher_home',compact('message'));
     }
 
     /**
@@ -35,7 +43,7 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       //
     }
 
     /**
