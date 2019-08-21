@@ -5,8 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Laravel</title>
-
-        <!-- Fonts -->
+        <!-- Styles -->
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+            <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
         <!-- Styles -->
@@ -61,10 +62,13 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+           .bg {
+                background: url(img/back1.png) center/cover no-repeat;
+            }
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        <div class="flex-center position-ref full-height bg">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -78,22 +82,36 @@
                     @endauth
                 </div>
             @endif
-
+                   @if (session('success'))
+                      <div>
+                        <div class="alert alert-success " id="alertmsg" role="alert">
+                          {{ session('success') }}
+                        </div>
+                      <div>  
+                    @endif
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Class Management System
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
+               {{--      <a href="https://laravel.com/docs">Docs</a>
                     <a href="https://laracasts.com">Laracasts</a>
                     <a href="https://laravel-news.com">News</a>
                     <a href="https://blog.laravel.com">Blog</a>
                     <a href="https://nova.laravel.com">Nova</a>
                     <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a href="https://github.com/laravel/laravel">GitHub</a> --}}
                 </div>
             </div>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf-8" async defer>
+             $("#alertmsg").fadeTo(2000, 500).slideUp(500, function() {
+              $("#alertmsg").slideUp(500);
+            });
+          
+
+        </script>
     </body>
 </html>

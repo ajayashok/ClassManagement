@@ -16,7 +16,8 @@ class StudentController extends Controller
     public function index()
     {
         $teach=Teacher::leftjoin('users','users.id','=','teachers.user_id')
-                        ->select('teachers.*','users.name','users.email')->get();
+                        ->select('teachers.*','users.name','users.email')
+                        ->get();
 
         return view('student.Student_home',compact('teach'));
     }

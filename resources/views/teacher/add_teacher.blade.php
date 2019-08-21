@@ -41,7 +41,7 @@
                 <div class="form-group row">
                 <label for="department" class="col-md-4 col-form-label text-md-right">{{ __('Department') }}</label>
                 <div class="col-md-6">
-                    <input id="department" type="text" class="form-control @error('department') is-invalid @enderror" name="department" value="{{ old('department') }}" required autocomplete="department" autofocus>
+                    <input id="department" type="text" class="form-control @error('department') is-invalid @enderror" name="department" value="{{ old('department') }}" required autocomplete="department"  style='text-transform:uppercase'; autofocus>
                     @error('department')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -69,10 +69,9 @@
                 </div>
             </div>
               <div style="text-align: right;">
-                <button type="button" class="btn btn-default addTeach" onclick="history.back();">Cancel</button>
-                <button type="submit" class="btn btn-default addTeach">Save</button>
+                <button type="button" class="btn btn-danger addTeach" onclick="history.back();">Cancel</button>
+                <button type="submit" class="btn btn-primary addTeach">Register</button>
               </div>  
-            {{-- {!! Form::close() !!} --}}
         </form>
                 </div>
             </div>

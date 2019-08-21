@@ -40,3 +40,5 @@ Auth::routes();
 	});
 
 	Route::resource('message','MessageController');
+
+	Route::get('replyHistory','ApiController@getReplyHistory');

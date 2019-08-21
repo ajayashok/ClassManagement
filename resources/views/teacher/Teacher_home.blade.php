@@ -39,7 +39,7 @@
 
                         <table class="table table-striped custab">
                         <thead>
-                        <h3>TEACHERS LISTS</h3>
+                        <h3>STUDENTS LISTS</h3>
                             <tr>
                                 <th>ID</th>
                                 <th>Student name</th>
@@ -55,7 +55,7 @@
                                     <td>{{ $data->message }}</td>
                                     <td class="text-center row">
                                     <div class="col-6">
-                                   @if($data->recieve == 1)
+                                   @if($data->status == 1)
                                     <a class='btn btn-success btn-xs disabled'>Allready Replied</a> </div>
                                    @else
                                     <a class='btn btn-warning btn-xs sendmsg' data-name='{{ $data->student_name }}' data-studid='{{ $data->student_id }}' data-id={{ $data->id }}><span class="glyphicon glyphicon-edit"></span>Send Reply</a> </div>
@@ -85,14 +85,18 @@
         <div class="modal-body">
             
             <!-- content goes here -->
-            <form action="{{ route('message.store') }}" method="POST">
+            {{-- <form action="{{ route('message.store') }}" method="POST">
+                @csrf --}}
+                <form action="{{ route('message.update', 'reply') }}" method="POST">
                 @csrf
+                @method('PUT')
               <div class="form-group">
                 <label for="message">Enter Message</label>
                 <input type="text" class="form-control" name="message" id="message" placeholder="Enter message" required>
               </div>
               <input type="hidden" id="stud_id" name="stud_id">
-              <input type="hidden" id="tech_id" name="tech_id" value={{ Auth::user()->id }}>
+              <input type="hidden" id="user_id" name="user_id" value={{ Auth::user()->id }}>
+              <input type="hidden" id="msg_id" name="msg_id">
 
               <button type="submit" class="btn btn-default">Send</button>
             </form>
@@ -112,9 +116,11 @@
     $(document).on('click', '.sendmsg', function(event) {
         event.preventDefault();
         var id=$(this).data('studid');
+        var msgid=$(this).data('id');
         var name=$(this).data('name');
         $('#stud').text(name)
         $('#stud_id').val(id)
+        $('#msg_id').val(msgid)
         $('#replymodal').modal('show')
     });
 

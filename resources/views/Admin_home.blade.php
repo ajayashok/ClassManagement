@@ -81,6 +81,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
+                                <th>Email</th>
                                 <th>Std</th>
                                 <th>Age</th>
                             </tr>

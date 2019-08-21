@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Message;
 use App\Student;
+use App\Teacher;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
@@ -53,9 +54,9 @@ class MessageController extends Controller
      * @param  \App\Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function show(Message $message)
+    public function show(Request $request)
     {
-        //
+        return $request->all();
     }
 
     /**
@@ -76,9 +77,16 @@ class MessageController extends Controller
      * @param  \App\Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Message $message)
+    public function update(Request $request, $id)
     {
-        //
+        $id=Teacher::where('user_id',$request->user_id)->pluck('id')->first();
+        $message=Message::find($request->msg_id);
+        $message->reply=$request->message;
+        $message->status='1';
+        $message->update();
+
+         $request->session()->flash('success', 'Reply Send Successfully !!');
+        return redirect()->action('StudentController@index');
     }
 
     /**

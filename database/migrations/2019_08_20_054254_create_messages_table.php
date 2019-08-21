@@ -21,8 +21,7 @@ class CreateMessagesTable extends Migration
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->string('message');
             $table->string('reply')->nullable();
-            $table->boolean('send')->default('0');
-            $table->boolean('recieve')->default('0');
+            $table->boolean('status')->default('0');
             $table->timestamps();
         });
     }

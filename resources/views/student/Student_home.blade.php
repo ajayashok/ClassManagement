@@ -19,7 +19,7 @@
 </style>
 @endsection
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -43,7 +43,8 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Dapartment</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">History</th>
+                                <th class="text-center">Send Message</th>
                             </tr>
                         </thead>
                             @if($teach)
@@ -53,10 +54,16 @@
                                     <td>{{ $data->name }}</td>
                                     <td>{{ $data->email }}</td>
                                     <td>{{ $data->department }}</td>
-                                    <td class="text-center row">
-                                    <div class="col-6">
-                                    <a class='btn btn-warning btn-xs sendmsg' data-name='{{ $data->name }}' data-id='{{ $data->id }}'><span class="glyphicon glyphicon-edit"></span> Send Message</a> </div>
-                                   </td>
+                                    <td class="text-center">
+                                        <div >
+                                            <a class='btn btn-info viewhistory' data-name='{{ $data->name }}' data-id='{{ $data->id }}' >Reply History</a>
+                                        </div>
+                                   </td>    
+                                    <td class="text-center ">
+                                        <div >
+                                            <a class='btn btn-warning btn-xs sendmsg' data-name='{{ $data->name }}' data-id='{{ $data->id }}'>Send Message</a> 
+                                        </div>
+                                    </td>
                                 </tr>
                               @endforeach
                             @endif     
@@ -97,6 +104,35 @@
     </div>
   </div>
 </div>
+
+<!-- line modal -->
+<div class="modal fade" id="viewhistory" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="lineModalLabel">SHOW REPLY HISTORY</h3>
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped custab">
+                <thead>
+                    <tr>
+                        <th>Teacher name</th>
+                        <th>Send message</th>
+                        <th>Reply</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody class="setdata">
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+</div>
+
+
 @endsection
 @section('script')
 <script type="text/javascript" charset="utf-8" async defer>
@@ -111,6 +147,42 @@ $(document).on('click', '.sendmsg', function(event) {
     $('#tech').text(name)
     $('#tech_id').val(id)
     $('#messagesendmodal').modal('show')
+});
+$(document).on('click', '.viewhistory', function(event) {
+    event.preventDefault();
+    var teacher_id=$(this).data('id');
+    var user_id={{ Auth::user()->id }};
+
+    $.ajax({
+        url: '{{ url('replyHistory') }}',
+        type: 'GET',
+        dataType: 'json',
+        data: {user_id: user_id,teacher_id:teacher_id},
+    })
+    .done(function(data) {
+        var fetchdata='';
+        if(data.length >= 1){
+            for(i=0;i<data.length;i++){
+                fetchdata=fetchdata+'<tr><td>'+data[i].name+'</td><td>'+data[i].message+'</td><td>'+data[i].reply+'</td><td>'+data[i].created_at+'</td></tr>';
+            }
+        }else{
+            fetchdata='No Replies';
+        }
+        $('.setdata').html(fetchdata);
+        $('#viewhistory').modal('show')
+        console.log(data.length);
+
+    })
+    .fail(function() {
+        console.log("error");
+    });
+    
+    
+    // var id=$(this).data('id');
+    // var name=$(this).data('name');
+    // $('#tech').text(name)
+    // $('#tech_id').val(id)
+    // $('#messagesendmodal').modal('show')
 });
 
 </script>
